@@ -533,8 +533,7 @@ void CGOpenMPRuntimeNVPTX::emitGenericParallelCall(
     ArrayRef<llvm::Value *> CapturedVars, const Expr *IfCond) {
   llvm::Function *Fn = cast<llvm::Function>(OutlinedFn);
 
-  auto &&L0ParallelGen = [this, Fn, &CapturedVars](CodeGenFunction &CGF,
-                                                   PrePostActionTy &) {
+  auto &&L0ParallelGen = [this, Fn](CodeGenFunction &CGF, PrePostActionTy &) {
     CGBuilderTy &Bld = CGF.Builder;
 
     // Prepare for parallel region. Indicate the outlined function.
@@ -565,7 +564,7 @@ void CGOpenMPRuntimeNVPTX::emitGenericParallelCall(
 
   auto &&SeqGen = [this, Fn, &CapturedVars, &Args](CodeGenFunction &CGF,
                                                    PrePostActionTy &) {
-    auto &&CodeGen = [this, Fn, &CapturedVars, &Args](CodeGenFunction &CGF,
+    auto &&CodeGen = [this, Fn, &CapturedVars](CodeGenFunction &CGF,
                                                       PrePostActionTy &Action) {
       Action.Enter(CGF);
 
